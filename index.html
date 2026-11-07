@@ -353,7 +353,7 @@ ol.must li strong{color:var(--ink)}
     <!-- COURSE NAV GROUPS: one .navgroup per course. Add lecture links above that course's NAV:[course-id]:END marker. -->
     <div class="navgroup" data-course="swe" data-name="Software Engineering">
       <h4><span>SE</span>Software Engineering</h4>
-      <a class="sub ext" href="SWE_Scratch%20%E2%80%94%20Lecture%201_%20Introduction.html" title="Lecture 1 is still its original stand-alone page">L01 · Introduction<small>original stand-alone page</small></a>
+      <a class="sub" href="#swe-lec01" data-view="swe-lec01">L01 · Introduction</a>
       <a class="sub" href="#swe-lec02" data-view="swe-lec02">L02 · Software Process Models</a>
       <a class="sub" href="#swe-lec03" data-view="swe-lec03">L03 · Requirements Engineering</a>
       <!-- NAV:swe:END -->
@@ -389,6 +389,630 @@ ol.must li strong{color:var(--ink)}
 
 <!-- ===================== LECTURES ===================== -->
 <!-- Each lecture is one <article class="view lecture" id="[course-id]-lecNN">. Insert new lectures directly above LECTURES:END. -->
+<!-- ===== Software Engineering · Lecture 1 · Introduction ===== -->
+<article class="view lecture" id="swe-lec01" data-title="L01 · Introduction" data-course="swe">
+<style>
+/* Lecture 1 only: widgets carried over from the original stand-alone Lecture 1 page, scoped to #swe-lec01 */
+#l1-berg .under{transition:opacity .5s,transform .5s;opacity:0;transform:translateY(14px)}
+#l1-berg.dive .under{opacity:1;transform:none}
+#swe-lec01 .cyc g.node{cursor:pointer}
+#swe-lec01 .cyc g.node circle{transition:fill .2s}
+#swe-lec01 .cyc g.node.on circle{fill:var(--blue)}
+#swe-lec01 .cyc g.node.on text{fill:var(--card)}
+#swe-lec01 .stage{font-size:1rem}
+#swe-lec01 .stage .tag{font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--orange);letter-spacing:.1em}
+#swe-lec01 .bars{display:flex;align-items:flex-end;gap:2rem;height:210px;border-bottom:2px solid var(--ink);padding:0 1rem;margin-top:.8rem}
+#swe-lec01 .bar{width:110px;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;font-family:var(--mono);font-weight:800}
+#swe-lec01 .bar div{border-radius:6px 6px 0 0;transition:height .35s}
+#swe-lec01 .barlbl{display:flex;gap:2rem;padding:0 1rem;font-family:var(--mono);font-size:.8rem}
+#swe-lec01 .barlbl span{width:110px;text-align:center}
+#swe-lec01 .mood{font-size:2rem;line-height:1;vertical-align:middle}
+#swe-lec01 table.grade{border-collapse:collapse;font-family:var(--mono);font-size:.92rem;width:100%;max-width:440px}
+#swe-lec01 table.grade td{padding:.45rem 0;border-bottom:1px dashed var(--line)}
+#swe-lec01 table.grade td:last-child{text-align:right;font-weight:800}
+#swe-lec01 table.grade tr.total td{border-bottom:0;border-top:2px solid var(--ink)}
+#swe-lec01 .gbar{display:flex;height:18px;border-radius:6px;overflow:hidden;margin:1rem 0 .4rem;max-width:440px}
+#swe-lec01 .legend{display:flex;gap:1rem;font-family:var(--mono);font-size:.8rem;margin:.4rem 0;flex-wrap:wrap}
+#swe-lec01 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:.35rem;vertical-align:-1px}
+#swe-lec01 .issues{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+@media (max-width:700px){#swe-lec01 .issues{grid-template-columns:1fr}}
+#swe-lec01 .issues .card{margin:0}
+#swe-lec01 .issues h4{font-family:var(--mono);margin:0 0 .3rem}
+#swe-lec01 .issues p{font-size:.98rem;margin:.2rem 0 .6rem}
+#swe-lec01 .devs{font-size:1.8rem;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+#swe-lec01 .devs span{animation:l1bob 2.4s ease-in-out infinite}
+#swe-lec01 .devs span:nth-child(2){animation-delay:.3s}#swe-lec01 .devs span:nth-child(3){animation-delay:.6s}#swe-lec01 .devs span:nth-child(4){animation-delay:.9s}#swe-lec01 .devs span:nth-child(5){animation-delay:1.2s}
+@keyframes l1bob{50%{transform:translateY(-5px)}}
+#swe-lec01 .scale{text-align:center}
+#swe-lec01 .scale .big{font-size:3rem;line-height:1.1;transition:transform .3s;display:inline-block;margin:.3rem 0}
+#swe-lec01 .scale .who{font-family:var(--mono);font-size:.82rem;font-weight:700}
+#swe-lec01 .lock{font-size:2.2rem;cursor:pointer;background:none;border:0;padding:0}
+#swe-lec01 .speed{height:10px;background:var(--paper);border-radius:6px;overflow:hidden}
+#swe-lec01 .speed div{height:100%;width:30%;background:var(--orange);animation:l1spd 3s ease-in-out infinite alternate}
+@keyframes l1spd{to{width:95%}}
+#swe-lec01 .lego{position:relative;height:200px;background:var(--paper);border-radius:10px;overflow:hidden}
+#swe-lec01 .blk{position:absolute;padding:.4rem .7rem;border-radius:7px;font-family:var(--mono);font-size:.78rem;font-weight:700;color:#fff;transition:all .7s cubic-bezier(.3,1.4,.5,1)}
+#swe-lec01 .base{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:280px;max-width:80%;height:34px;border:2px dashed var(--soft);border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:.78rem;color:var(--soft)}
+#swe-lec01 .lego.built .base{border-style:solid;border-color:var(--ok);color:var(--ok)}
+</style>
+
+<section id="swe-lec01-top">
+  <div class="eyebrow">Software engineering · lecture 01</div>
+  <h1>Anyone can write code. <span class="hl">Engineers</span> make it survive <span class="hl2">year five.</span></h1>
+  <p class="lead">This lecture asks one question: why do we need a whole discipline for making software, instead of just coding until it works? Short answer: because the code is the cheap part. Everything below is the lecture in plain words, with a hotel as the running example.</p>
+  <p>The hotel examples (🏨) are illustrations, not slide content; later lectures reuse the same hotel app. Slide wording sits in blue “From the slides” boxes, and every section has a 📄 tag pointing back to the original file.</p>
+  <div class="metaRow">
+    <span class="ref">📄 Slide 1 · title</span>
+    <span>Prof. Dr. Sherin Moussa</span>
+    <span class="donecount" data-donecount="swe-lec01"><b>0/12</b> sections done <span class="mbar"><i></i></span></span>
+  </div>
+  <div class="card">
+    <div class="cardhead">Lecture map <span>23 slides</span></div>
+    <div class="lmap">
+      <a href="#swe-lec01-course"><b>A · The course</b><span>Reference book and grading</span><em class="ref">📄 Slides 2–3</em></a>
+      <a href="#swe-lec01-what"><b>B · What SE is</b><span>Definition, costs, process activities, why it matters</span><em class="ref">📄 Slides 4–7</em></a>
+      <a href="#swe-lec01-products"><b>C · Products &amp; quality</b><span>Generic vs customized, the four attributes</span><em class="ref">📄 Slides 8–10</em></a>
+      <a href="#swe-lec01-issues"><b>D · Challenges &amp; system types</b><span>Four issues, eight application types, fundamentals</span><em class="ref">📄 Slides 11–16</em></a>
+      <a href="#swe-lec01-web"><b>E · SE for the web</b><span>Web services, cloud, reuse, incremental delivery</span><em class="ref">📄 Slides 17–20</em></a>
+      <a href="#swe-lec01-recap"><b>Recap</b><span>Key points and exam traps</span><em class="ref">📄 Slides 21–23</em></a>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section class="sec" id="swe-lec01-course" data-toc="01 · The course">
+  <div class="sechead"><div class="eyebrow">01 · The course</div><span class="ref">📄 Slides 2–3</span></div>
+  <h2>The book, and <span class="hl">how you're graded</span></h2>
+  <p>The whole course follows one textbook. Most slides in every lecture come from it, so it's the best place to read more.</p>
+  <div class="orig"><span class="k">FROM THE SLIDES · COURSE REFERENCE</span>
+    <p>Ian Sommerville, Software Engineering, 10th Edition, Addison Wesley, ISBN: 0133943030.</p>
+  </div>
+  <h3>Grading policy <span class="ref">📄 Slide 3</span></h3>
+  <div class="card">
+    <div class="gbar" aria-hidden="true">
+      <div style="flex:15;background:#7C7EE8"></div><div style="flex:15;background:var(--blue)"></div><div style="flex:10;background:var(--orange)"></div><div style="flex:20;background:#E9A86B"></div><div style="flex:40;background:var(--ink)"></div>
+    </div>
+    <table class="grade">
+      <tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#7C7EE8;margin-right:.4rem"></i>Lab hands-on tasks</td><td>15</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--blue);margin-right:.4rem"></i>Lab Project</td><td>15</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--orange);margin-right:.4rem"></i>Pop-up Lecture Quizzes (2)</td><td>10</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#E9A86B;margin-right:.4rem"></i>Midterm</td><td>20</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--ink);margin-right:.4rem"></i>Final-Term Examination</td><td>40</td></tr>
+      <tr class="total"><td><strong>Total</strong></td><td>100</td></tr>
+    </table>
+  </div>
+  <p class="note">“Pop-up” quizzes are unannounced, so it pays to keep up lecture by lecture. The lab part (hands-on tasks plus the project) is worth 30, the same as the midterm and the quizzes together.</p>
+</section>
+
+<!-- 02 -->
+<section class="sec" id="swe-lec01-what" data-toc="02 · What is software engineering">
+  <div class="sechead"><div class="eyebrow">02 · What is SE?</div><span class="ref">📄 Slide 4</span></div>
+  <h2>Code is just the <span class="hl">tip of the iceberg</span></h2>
+  <p>Most people think making software means writing code. In reality, coding is a small, visible part. Software engineering covers <strong>all</strong> of the work: from the first description of what the system should do, all the way to keeping it running after people start using it. Dive under to see the rest.</p>
+  <div class="card">
+    <svg id="l1-berg" viewBox="0 0 560 330" role="img" aria-label="Iceberg: coding above water, most of the work below">
+      <rect x="0" y="0" width="560" height="110" fill="var(--blueBg)" opacity=".5"/>
+      <rect x="0" y="110" width="560" height="220" fill="var(--blue)" opacity=".16"/>
+      <path d="M0 110 Q 35 102 70 110 T 140 110 T 210 110 T 280 110 T 350 110 T 420 110 T 490 110 T 560 110" stroke="var(--blue)" stroke-width="2" fill="none"/>
+      <polygon points="280,30 330,110 230,110" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+      <text x="280" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">coding</text>
+      <polygon points="230,110 330,110 440,200 400,300 160,310 110,200" fill="var(--card)" stroke="var(--ink)" stroke-width="2" opacity=".85"/>
+      <g class="under" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="middle">
+        <text x="280" y="140">specification: what to build?</text>
+        <text x="280" y="165">design &amp; architecture</text>
+        <text x="280" y="190">testing &amp; validation</text>
+        <text x="280" y="215">project management</text>
+        <text x="280" y="240">tools &amp; methods</text>
+        <text x="280" y="270" fill="var(--orange)">maintenance… for years</text>
+      </g>
+      <text x="520" y="30" text-anchor="end" font-size="20">☀️</text>
+      <text x="60" y="180" font-size="22" class="under">🐟</text>
+      <text x="470" y="270" font-size="22" class="under">🐙</text>
+    </svg>
+    <div class="btns"><button class="btn" id="l1-dive" aria-pressed="false">🤿 Dive under</button></div>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES</span>
+    <ul>
+      <li>Software engineering is an engineering discipline that is concerned with all aspects of software production from the early stages of system specification through to maintaining the system after it has gone into use.</li>
+      <li><b>Engineering discipline</b><ul><li>Using appropriate theories and methods to solve problems bearing in mind organizational and financial constraints.</li></ul></li>
+      <li><b>All aspects of software production</b><ul><li>Not just technical process of development, also project management and the development of tools, methods etc. to support software production.</li></ul></li>
+    </ul>
+  </div>
+  <p>A <strong>discipline</strong> is a field of work with its own proven methods. <strong>Organizational and financial constraints</strong> are the real-world limits: deadlines, budget, and the way the company works. <strong>Project management</strong> means planning and tracking the work, people and money.</p>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🛠️</div><h4>Software engineering</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Software engineering</h4><p>An engineering discipline concerned with all aspects of software production, from early system specification to maintaining the system after it has gone into use.</p><span class="hint">📄 Slide 4 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">📏</div><h4>Engineering discipline</h4><span class="hint">tap for the meaning</span></div><div class="b"><h4>Engineering discipline</h4><p>Using appropriate theories and methods to solve problems bearing in mind organizational and financial constraints.</p><span class="hint">📄 Slide 4 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🧊</div><h4>All aspects of software production</h4><span class="hint">tap for the meaning</span></div><div class="b"><h4>All aspects of software production</h4><p>Not just technical development, also project management and the development of tools, methods etc. to support software production.</p><span class="hint">📄 Slide 4 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>A bridge engineer doesn't build the perfect bridge. They build the best bridge the city can afford, on time, using methods proven to work. And their job includes managing the crew and the budget, not just pouring concrete.</p></div>
+</section>
+
+<!-- 03 -->
+<section class="sec" id="swe-lec01-costs" data-toc="03 · Software costs">
+  <div class="sechead"><div class="eyebrow">03 · Software costs</div><span class="ref">📄 Slide 5</span></div>
+  <h2>Building is cheap. <span class="hl2">Keeping</span> is expensive.</h2>
+  <p>Two facts from the slide. Software often costs more than the computer it runs on. And software costs <strong>more to maintain than to develop</strong>: for systems that live a long time, maintenance can cost several times what development did. <strong>Maintenance</strong> means fixing, updating and improving software after it goes into use. Drag the slider and watch.</p>
+  <div class="orig"><span class="k">FROM THE SLIDES</span>
+    <ul>
+      <li>Software costs often dominate computer system costs. The costs of software on a PC are often greater than the hardware cost.</li>
+      <li>Software costs more to maintain than it does to develop. For systems with a long life, maintenance costs may be several times development costs.</li>
+      <li>Software engineering is concerned with cost-effective software development.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <label for="l1-yrs" class="lab">System in use for <span id="l1-yrsOut">3</span> years <span id="l1-mood" class="mood" aria-hidden="true"></span></label><br>
+    <input type="range" id="l1-yrs" min="1" max="15" value="3">
+    <div class="bars" aria-hidden="true">
+      <div class="bar"><span>1.0×</span><div id="l1-bDev" style="background:var(--blue)"></div></div>
+      <div class="bar"><span id="l1-vMain"></span><div id="l1-bMain" style="background:var(--orange)"></div></div>
+    </div>
+    <div class="barlbl"><span>build it</span><span>maintain it</span></div>
+    <p class="note" style="margin-bottom:0">Illustrative numbers to show the shape, not real data.</p>
+  </div>
+  <p><strong>Dominate</strong> = make up the biggest part. <strong>Cost-effective</strong> = good value for the money spent over the whole life of the system, not just on launch day.</p>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>A car is one payment. Fuel, servicing and repairs over ten years usually cost more. That's why software engineering cares about the cost over the system's whole life.</p></div>
+</section>
+
+<!-- 04 -->
+<section class="sec" id="swe-lec01-activities" data-toc="04 · Process activities">
+  <div class="sechead"><div class="eyebrow">04 · Process activities</div><span class="ref">📄 Slide 6</span></div>
+  <h2>Four activities. <span class="hl">Every</span> project. Forever.</h2>
+  <p>Whatever method a team uses, these four activities always show up. And it's a loop: evolution feeds new specifications. Tap each stage to see it in the hotel example. Lecture 2 builds on these four (<a href="#swe-lec02-process">Lecture 2 §1</a>).</p>
+  <div class="orig"><span class="k">FROM THE SLIDES · SOFTWARE PROCESS ACTIVITIES</span>
+    <ul>
+      <li><b>Software specification</b>, where customers and engineers define the software that is to be produced and the constraints on its operation.</li>
+      <li><b>Software development</b>, where the software is designed and programmed.</li>
+      <li><b>Software validation</b>, where the software is checked to ensure that it is what the customer requires.</li>
+      <li><b>Software evolution</b>, where the software is modified to reflect changing customer and market requirements.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="split">
+      <svg class="cyc" id="l1-cyc" viewBox="0 0 320 320" role="group" aria-label="Software process cycle: specification, development, validation, evolution">
+        <circle cx="160" cy="160" r="110" fill="none" stroke="var(--line)" stroke-width="3" stroke-dasharray="6 6"/>
+        <circle r="6" fill="var(--orange)" id="l1-runner"><animateMotion dur="8s" repeatCount="indefinite" path="M160,50 A110,110 0 1,1 159.9,50"/></circle>
+      </svg>
+      <div class="stage" id="l1-stage" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">📋</div><h4>Software specification</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Software specification</h4><p>Customers and engineers define the software that is to be produced and the constraints on its operation.</p><span class="hint">📄 Slide 6 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">⌨️</div><h4>Software development</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Software development</h4><p>The software is designed and programmed.</p><span class="hint">📄 Slide 6 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">✅</div><h4>Software validation</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Software validation</h4><p>The software is checked to ensure that it is what the customer requires.</p><span class="hint">📄 Slide 6 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🌱</div><h4>Software evolution</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Software evolution</h4><p>The software is modified to reflect changing customer and market requirements.</p><span class="hint">📄 Slide 6 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Running a garden. You decide what to plant (specification), you plant it (development), you check what actually grows (validation), and every season you change things as tastes and weather change (evolution). Then you plan again.</p></div>
+</section>
+
+<!-- 05 -->
+<section class="sec" id="swe-lec01-why" data-toc="05 · Why SE matters">
+  <div class="sechead"><div class="eyebrow">05 · Why SE matters</div><span class="ref">📄 Slide 7</span></div>
+  <h2>Cheap to build ≠ <span class="hl2">cheap to own</span></h2>
+  <p>Individuals and society now depend on software, so it must be <strong>reliable</strong> (works without failing) and <strong>trustworthy</strong>, and it must be built economically and quickly. In the long run, engineering methods are usually cheaper than writing programs as if they were a <strong>personal programming project</strong>: something you code for yourself, with no plan, no tests and no documentation.</p>
+  <div class="orig"><span class="k">FROM THE SLIDES · IMPORTANCE OF SOFTWARE ENGINEERING</span>
+    <ul>
+      <li>More and more, individuals and society rely on advanced software systems. We need to be able to produce reliable and trustworthy systems economically and quickly.</li>
+      <li>It is usually cheaper, in the long run, to use software engineering methods and techniques for software systems rather than just write the programs as if it was a personal programming project.</li>
+      <li>For most types of systems, most of the costs are the costs of changing the software after it has gone into use.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="cardhead">Try it: two teams build the same hotel app <span id="l1-simStat">year 0</span></div>
+    <div class="split">
+      <div>
+        <svg id="l1-sim" viewBox="0 0 520 300" role="img" aria-label="Cumulative cost over 10 years for two teams"></svg>
+        <div class="legend"><span><i style="background:var(--orange)"></i>Team Cowboy</span><span><i style="background:var(--blue)"></i>Team Engineer</span></div>
+      </div>
+      <div>
+        <p><strong>Team Cowboy</strong> skips planning and just codes, like a personal project. They launch fast and cheap.</p>
+        <p><strong>Team Engineer</strong> writes a spec, designs, tests. Launch costs twice as much.</p>
+        <p>Then the hotel asks for changes. Every shortcut Cowboy took becomes <strong>technical debt</strong>: hidden mess that makes each later change more expensive.</p>
+        <div class="btns">
+          <button class="btn" id="l1-simPlay">▶ Run 10 years</button>
+          <button class="btn alt" id="l1-simChange">Throw a change request</button>
+          <button class="btn ghost" id="l1-simReset">Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="log" id="l1-simLog" aria-live="polite"></div>
+    <p class="note" style="margin-bottom:0">Costs are made-up units; the shape is the lesson. It matches the slide's last point: most costs come from changing the software after it goes into use.</p>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Cooking for yourself vs running a restaurant kitchen. At home you can improvise. A restaurant needs recipes, hygiene rules and stock control, because hundreds of people depend on it every day for years.</p></div>
+</section>
+
+<!-- 06 -->
+<section class="sec" id="swe-lec01-products" data-toc="06 · Software products">
+  <div class="sechead"><div class="eyebrow">06 · Software products</div><span class="ref">📄 Slides 8–9</span></div>
+  <h2>Off the rack or <span class="hl">tailor-made</span></h2>
+  <p>There are two kinds of software product. <strong>Generic products</strong> are sold to anyone who wants them. <strong>Customized products</strong> are <em>commissioned</em> (ordered and paid for) by one specific customer for their own needs. The key difference isn't what the software does. It's <strong>who owns the specification</strong>: who decides what it does and when it changes.</p>
+  <div class="orig"><span class="k">FROM THE SLIDES · SOFTWARE PRODUCTS</span>
+    <ul>
+      <li><b>Generic products</b><ul><li>Stand-alone systems that are marketed and sold to any customer who wishes to buy them.</li><li>Examples – PC software such as graphics programs, project management tools; CAD software; software for specific markets such as appointments systems for dentists.</li></ul></li>
+      <li><b>Customized products</b><ul><li>Software that is commissioned by a specific customer to meet their own needs.</li><li>Examples – embedded control systems, air traffic control software, traffic monitoring systems.</li></ul></li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="seg" role="group" aria-label="Product type">
+      <button aria-pressed="true" data-p="g">👕 Generic</button>
+      <button aria-pressed="false" data-p="c">🧵 Customized</button>
+    </div>
+    <div class="split" style="margin-top:1rem">
+      <svg id="l1-prodPic" viewBox="0 0 260 170" aria-hidden="true"></svg>
+      <dl class="facts" id="l1-prodFacts" aria-live="polite"></dl>
+    </div>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES · PRODUCT SPECIFICATION</span>
+    <ul>
+      <li><b>Generic products</b><ul><li>The specification of what the software should do is owned by the software developer and decisions on software change are made by the developer.</li></ul></li>
+      <li><b>Customized products</b><ul><li>The specification of what the software should do is owned by the customer for the software and they make decisions on software changes that are required.</li></ul></li>
+    </ul>
+  </div>
+  <p><strong>CAD</strong> (computer-aided design) software is used to draw and design things like buildings and machine parts. <strong>Embedded control systems</strong> are software inside a device that controls its hardware (§9 covers them).</p>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">👕</div><h4>Generic products</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Generic products</h4><p>Stand-alone systems marketed and sold to any customer who wishes to buy them. The developer owns the specification and decides on changes.</p><span class="hint">📄 Slides 8–9 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🧵</div><h4>Customized products</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Customized products</h4><p>Software commissioned by a specific customer to meet their own needs. The customer owns the specification and decides on changes.</p><span class="hint">📄 Slides 8–9 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>A shirt off the rack vs a tailor-made suit. The shop decides the rack shirt's colours and sizes, and changes them when it wants. For the tailored suit, you decide everything, and you ask for alterations.</p></div>
+</section>
+
+<!-- 07 -->
+<section class="sec" id="swe-lec01-attributes" data-toc="07 · Attributes of good software">
+  <div class="sechead"><div class="eyebrow">07 · Good software</div><span class="ref">📄 Slide 10</span></div>
+  <h2>The 4 essential attributes of <span class="hl">good software</span></h2>
+  <p>The slide lists four qualities every good piece of software needs. Notice that “has lots of features” is not on the list.</p>
+  <div class="tablewrap"><table class="tbl">
+    <thead><tr><th>Product characteristic</th><th>Description (slide wording)</th></tr></thead>
+    <tbody>
+      <tr><td>Maintainability</td><td>Software should be written in such a way so that it can evolve to meet the changing needs of customers. This is a critical attribute because software change is an inevitable requirement of a changing business environment.</td></tr>
+      <tr><td>Dependability and security</td><td>Software dependability includes a range of characteristics including reliability, security and safety. Dependable software should not cause physical or economic damage in the event of system failure. Malicious users should not be able to access or damage the system.</td></tr>
+      <tr><td>Efficiency</td><td>Software should not make wasteful use of system resources such as memory and processor cycles. Efficiency therefore includes responsiveness, processing time, memory utilisation, etc.</td></tr>
+      <tr><td>Acceptability</td><td>Software must be acceptable to the type of users for which it is designed. This means that it must be understandable, usable and compatible with other systems that they use.</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Inevitable</strong> = certain to happen. <strong>Malicious users</strong> = people trying to cause harm, like attackers. <strong>Processor cycles</strong> = the computer's processing time. <strong>Responsiveness</strong> = how quickly it reacts. <strong>Compatible</strong> = works together with the other systems people already use.</p>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🔧</div><h4>Maintainability</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Maintainability</h4><p>Can evolve to meet the changing needs of customers. A critical attribute, because software change is inevitable.</p><span class="hint">📄 Slide 10 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🛡️</div><h4>Dependability and security</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Dependability and security</h4><p>Reliability, security and safety: no physical or economic damage on failure, and malicious users can't access or damage it.</p><span class="hint">📄 Slide 10 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">⚡</div><h4>Efficiency</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Efficiency</h4><p>No wasteful use of resources such as memory and processor cycles: responsiveness, processing time, memory utilisation.</p><span class="hint">📄 Slide 10 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🙋</div><h4>Acceptability</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Acceptability</h4><p>Acceptable to its users: understandable, usable and compatible with other systems they use.</p><span class="hint">📄 Slide 10 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="card" id="l1-miss">
+    <div class="cardhead">What happens to a hotel when one attribute is missing <span>🏨 illustration</span></div>
+    <div class="seg" role="group" aria-label="Missing attribute">
+      <button aria-pressed="true" data-miss="0">🔧 No maintainability</button>
+      <button aria-pressed="false" data-miss="1">🛡️ No dependability</button>
+      <button aria-pressed="false" data-miss="2">⚡ No efficiency</button>
+      <button aria-pressed="false" data-miss="3">🙋 No acceptability</button>
+    </div>
+    <p id="l1-missTxt" aria-live="polite" style="margin:1rem 0 0"></p>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>A good car: easy to service (maintainability), brakes that never fail and locks that keep thieves out (dependability and security), low fuel use (efficiency), and controls you understand that fit your garage (acceptability). A car with 50 gadgets but failing brakes is not a good car.</p></div>
+</section>
+
+<!-- 08 -->
+<section class="sec" id="swe-lec01-issues" data-toc="08 · Issues that affect software">
+  <div class="sechead"><div class="eyebrow">08 · Challenges</div><span class="ref">📄 Slides 11–12</span></div>
+  <h2>Four forces <span class="hl2">pushing on</span> all software</h2>
+  <p>The slides name four general issues that affect almost every software system today.</p>
+  <div class="issues">
+    <div class="card">
+      <h4>Heterogeneity</h4>
+      <p>Systems must run as <strong>distributed systems</strong> (spread over many connected machines) across networks with very different computers and mobile devices. “Works on my laptop” isn't enough.</p>
+      <div class="devs" aria-hidden="true"><span>💻</span><span>📱</span><span>🖥️</span><span>⌚</span><span>📟</span></div>
+    </div>
+    <div class="card">
+      <h4>Business and social change</h4>
+      <p>Business and society change fast as <strong>emerging economies</strong> (fast-growing countries) develop and new technologies appear. Organizations must change existing software and build new software quickly.</p>
+      <div class="speed" aria-hidden="true"><div></div></div>
+    </div>
+    <div class="card">
+      <h4>Security and trust</h4>
+      <p>Software is intertwined with every part of our lives, so we must be able to trust it.</p>
+      <button class="lock" id="l1-lock" aria-label="Toggle lock">🔓</button> <span id="l1-lockTxt" class="note">Tap to lock it down</span>
+    </div>
+    <div class="card scale">
+      <h4 style="text-align:left">Scale</h4>
+      <p style="text-align:left">The same discipline covers tiny <strong>embedded systems</strong> in wearable devices up to <strong>Internet-scale, cloud-based</strong> systems serving the whole world.</p>
+      <div class="big" id="l1-scBig">⌚</div>
+      <div class="who" id="l1-scWho"></div>
+      <input type="range" id="l1-sc" min="0" max="4" value="0" aria-label="System scale">
+    </div>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES · GENERAL ISSUES THAT AFFECT SOFTWARE</span>
+    <ul>
+      <li><b>Heterogeneity</b><ul><li>Increasingly, systems are required to operate as distributed systems across networks that include different types of computer and mobile devices.</li></ul></li>
+      <li><b>Business and social change</b><ul><li>Business and society are changing incredibly quickly as emerging economies develop and new technologies become available. They need to be able to change their existing software and to rapidly develop new software.</li></ul></li>
+      <li><b>Security and trust</b><ul><li>As software is intertwined with all aspects of our lives, it is essential that we can trust that software.</li></ul></li>
+      <li><b>Scale</b><ul><li>Software has to be developed across a very wide range of scales, from very small embedded systems in portable or wearable devices through to Internet-scale, cloud-based systems that serve a global community.</li></ul></li>
+    </ul>
+  </div>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🧩</div><h4>Heterogeneity</h4><span class="hint">tap for the meaning</span></div><div class="b"><h4>Heterogeneity</h4><p>Systems must operate as distributed systems across networks with different types of computer and mobile devices.</p><span class="hint">📄 Slide 11 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">📈</div><h4>Scale</h4><span class="hint">tap for the meaning</span></div><div class="b"><h4>Scale</h4><p>From very small embedded systems in wearable devices to Internet-scale, cloud-based systems serving a global community.</p><span class="hint">📄 Slide 12 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Designing a phone charger sold worldwide. It must fit many plug types (heterogeneity), keep up with new phones every year (change), never catch fire (trust), and come in sizes from a tiny earbud charger to a charging station for a whole office (scale).</p></div>
+</section>
+
+<!-- 09 -->
+<section class="sec" id="swe-lec01-types" data-toc="09 · Application types">
+  <div class="sechead"><div class="eyebrow">09 · Application types</div><span class="ref">📄 Slides 13–15</span></div>
+  <h2>Eight kinds of <span class="hl">system</span></h2>
+  <p>Different kinds of system need different tools and techniques. The slides list eight application types. Flip each card for its definition, then see real examples in the table below.</p>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">💻</div><h4>Stand-alone applications</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Stand-alone applications</h4><p>Run on a local computer, such as a PC. They include all necessary functionality and do not need to be connected to a network.</p><span class="hint">📄 Slide 13 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🛒</div><h4>Interactive transaction-based applications</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Interactive transaction-based</h4><p>Execute on a remote computer and are accessed by users from their own PCs or terminals. Include web applications such as e-commerce.</p><span class="hint">📄 Slide 13 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🚗</div><h4>Embedded control systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Embedded control systems</h4><p>Software control systems that control and manage hardware devices. Numerically, probably more of these than any other type.</p><span class="hint">📄 Slide 13 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">📦</div><h4>Batch processing systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Batch processing systems</h4><p>Business systems that process data in large batches: large numbers of individual inputs create corresponding outputs.</p><span class="hint">📄 Slide 14 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🎮</div><h4>Entertainment systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Entertainment systems</h4><p>Primarily for personal use and intended to entertain the user.</p><span class="hint">📄 Slide 14 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🌉</div><h4>Modeling and simulation systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Modeling and simulation</h4><p>Developed by scientists and engineers to model physical processes or situations, which include many, separate, interacting objects.</p><span class="hint">📄 Slide 14 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">📡</div><h4>Data collection systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Data collection systems</h4><p>Collect data from their environment using a set of sensors and send that data to other systems for processing.</p><span class="hint">📄 Slide 15 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🧩</div><h4>Systems of systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Systems of systems</h4><p>Systems that are composed of a number of other software systems.</p><span class="hint">📄 Slide 15 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="orig" style="margin-top:1.4rem"><span class="k">FROM THE SLIDES · APPLICATION TYPES</span>
+    <ul>
+      <li><b>Stand-alone applications</b> – These are application systems that run on a local computer, such as a PC. They include all necessary functionality and do not need to be connected to a network.</li>
+      <li><b>Interactive transaction-based applications</b> – Applications that execute on a remote computer and are accessed by users from their own PCs or terminals. These include web applications such as e-commerce applications.</li>
+      <li><b>Embedded control systems</b> – These are software control systems that control and manage hardware devices. Numerically, there are probably more embedded systems than any other type of system.</li>
+      <li><b>Batch processing systems</b> – These are business systems that are designed to process data in large batches. They process large numbers of individual inputs to create corresponding outputs.</li>
+      <li><b>Entertainment systems</b> – These are systems that are primarily for personal use and which are intended to entertain the user.</li>
+      <li><b>Systems for modeling and simulation</b> – These are systems that are developed by scientists and engineers to model physical processes or situations, which include many, separate, interacting objects.</li>
+      <li><b>Data collection systems</b> – These are systems that collect data from their environment using a set of sensors and send that data to other systems for processing.</li>
+      <li><b>Systems of systems</b> – These are systems that are composed of a number of other software systems.</li>
+    </ul>
+  </div>
+  <p>A <strong>remote computer</strong> is one somewhere else, reached over a network. A <strong>terminal</strong> is a screen and keyboard connected to a remote computer. <strong>E-commerce</strong> = buying and selling online. A <strong>batch</strong> is a big group of items processed together.</p>
+  <h3>One example of each type</h3>
+  <div class="tablewrap"><table class="tbl">
+    <thead><tr><th>Example (illustration)</th><th>Type</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Microsoft Word used offline on a laptop</td><td>Stand-alone</td><td>Everything runs locally; no network needed.</td></tr>
+      <tr><td>Amazon's online store</td><td>Interactive transaction-based</td><td>Runs on remote servers; you use it from your own device.</td></tr>
+      <tr><td>A car's anti-lock braking software</td><td>Embedded control</td><td>It directly controls hardware: the brakes.</td></tr>
+      <tr><td>The monthly payroll for 5,000 employees</td><td>Batch processing</td><td>Thousands of inputs processed together into payslips.</td></tr>
+      <tr><td>FIFA on a PlayStation</td><td>Entertainment</td><td>Personal use, built to entertain.</td></tr>
+      <tr><td>Simulating how a bridge reacts to wind</td><td>Modeling &amp; simulation</td><td>Models a physical process with many interacting parts.</td></tr>
+      <tr><td>A weather station sending readings every minute</td><td>Data collection</td><td>Sensors collect data and pass it on.</td></tr>
+      <tr><td>🏨 A hotel where booking, door locks, POS and accounting are all linked</td><td>Systems of systems</td><td>Several independent systems combined into one bigger system.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Tutorial 1 groups systems a little differently (embedded, information systems, sensor-based data collection) and works through three book case studies; it's in <a href="#swe-lec02-practice">Lecture 2's Practice section</a>.</p>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Vehicles. A bicycle, a bus, a fire engine and an aeroplane are all vehicles, but each needs different skills, tools and safety rules to build. Software types are the same: one discipline, very different jobs.</p></div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="swe-lec01-fund" data-toc="10 · SE fundamentals">
+  <div class="sechead"><div class="eyebrow">10 · Fundamentals</div><span class="ref">📄 Slide 16</span></div>
+  <h2>Rules that apply to <span class="hl">everything</span></h2>
+  <p>Whatever type of system you build, and whatever technique you use, four principles always apply.</p>
+  <div class="grid3">
+    <div class="card mini"><div class="ico">🗺️</div><h4>Managed process</h4><p>Use a development process you understand and control. Different software, different process, but never no process.</p><p class="note" style="margin:0"><a href="#swe-lec02-models">Process models: Lecture 2</a></p></div>
+    <div class="card mini"><div class="ico">⚡</div><h4>Dependability &amp; performance</h4><p>Important for every type of system, not just the critical ones.</p></div>
+    <div class="card mini"><div class="ico">📋</div><h4>Specification &amp; requirements</h4><p>Understand and manage what the software should do.</p><p class="note" style="margin:0"><a href="#swe-lec03-re">Requirements: Lecture 3</a></p></div>
+    <div class="card mini"><div class="ico">♻️</div><h4>Reuse</h4><p>Where it makes sense, reuse existing software instead of writing new.</p><p class="note" style="margin:0"><a href="#swe-lec02-integration">Reuse: Lecture 2 §7</a></p></div>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES · SOFTWARE ENGINEERING FUNDAMENTALS</span>
+    <p>Some fundamental principles apply to all types of software system, irrespective of the development techniques used:</p>
+    <ul>
+      <li>Systems should be developed using a managed and understood <b>development process</b>. Of course, different processes are used for different types of software.</li>
+      <li><b>Dependability and performance</b> are important for all types of system.</li>
+      <li>Understanding and managing the <b>software specification and requirements</b> (what the software should do) are important.</li>
+      <li>Where appropriate, you should <b>reuse software</b> that has already been developed rather than write new software.</li>
+    </ul>
+  </div>
+  <p><strong>Irrespective of</strong> = no matter which. <strong>Performance</strong> = how fast and efficiently it works.</p>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Basic kitchen rules. Whether you run a food truck or a five-star restaurant: follow a routine, keep food safe, know what the customer ordered, and don't bake your own bread if a good bakery is next door.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="swe-lec01-web" data-toc="11 · SE for the web">
+  <div class="sechead"><div class="eyebrow">11 · SE for the web</div><span class="ref">📄 Slides 17–20</span></div>
+  <h2>Building for <span class="hl">the web</span></h2>
+  <p>The web is now a <strong>platform</strong> (a base that applications run on), and organizations increasingly build web-based systems instead of local ones. <strong>Web services</strong> let other programs use an application's functions over the web. In <strong>cloud computing</strong>, applications run remotely “in the cloud”, and users don't buy the software: they pay according to use, like an electricity bill.</p>
+  <div class="orig"><span class="k">FROM THE SLIDES · INTERNET SOFTWARE ENGINEERING</span>
+    <ul>
+      <li>The Web is now a platform for running application and organizations are increasingly developing web-based systems rather than local systems.</li>
+      <li>Web services allow application functionality to be accessed over the web.</li>
+      <li>Cloud computing is an approach to the provision of computer services where applications run remotely on the ‘cloud’.<ul><li>Users do not buy software but pay according to use.</li></ul></li>
+    </ul>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES · WEB-BASED SOFTWARE ENGINEERING</span>
+    <ul>
+      <li>Web-based systems are complex distributed systems, but the fundamental principles of software engineering discussed previously are as applicable to them as they are to any other types of system.</li>
+      <li>The fundamental ideas of software engineering apply to web-based software in the same way that they apply to other types of software system.</li>
+    </ul>
+  </div>
+  <p>Web systems are <strong>complex distributed systems</strong> (many machines working together over a network), but the same fundamentals from §10 still apply. Slides 19–20 add four things that stand out for the web:</p>
+  <div class="card">
+    <div class="cardhead">Software reuse: assemble, don't write from scratch <span>📄 Slide 19 · 🏨 illustration</span></div>
+    <div class="lego" id="l1-lego">
+      <div class="blk" style="background:#3E3FDB" data-x="5%" data-y="18px" data-bx="calc(50% - 138px)" data-by="58px">💳 Payments API</div>
+      <div class="blk" style="background:#E3782A" data-x="62%" data-y="30px" data-bx="calc(50% - 10px)" data-by="58px">🗺️ Maps</div>
+      <div class="blk" style="background:#7C7EE8" data-x="30%" data-y="80px" data-bx="calc(50% - 138px)" data-by="100px">🔐 Login</div>
+      <div class="blk" style="background:#2A9D8F" data-x="75%" data-y="100px" data-bx="calc(50% - 10px)" data-by="100px">✉️ Email</div>
+      <div class="base" id="l1-legoBase">your hotel app</div>
+    </div>
+    <div class="btns"><button class="btn" id="l1-legoBtn">🧩 Assemble</button></div>
+  </div>
+  <div class="card">
+    <div class="cardhead">Incremental and agile: ship in pieces <span>📄 Slide 19 · 🏨 illustration</span></div>
+    <div class="versions" id="l1-vers">
+      <div class="ver shipped"><b>v1</b><div>Guests can see rooms and book.</div></div>
+      <div class="ver"><b>v2</b><div>Online payment added after hotel feedback.</div></div>
+      <div class="ver"><b>v3</b><div>Loyalty points nobody asked for in v1.</div></div>
+      <div class="ver"><b>v4</b><div>Arabic and mobile check-in.</div></div>
+    </div>
+    <div class="btns"><button class="btn alt" id="l1-shipBtn">🚀 Ship next version</button></div>
+  </div>
+  <div class="split">
+    <div class="callout" style="margin-top:0"><span class="k">SERVICE-ORIENTED SYSTEMS</span><p>The software components can be stand-alone web services that talk to each other, like separate shops in a mall.</p></div>
+    <div class="callout" style="margin-top:0"><span class="k">RICH INTERFACES</span><p>Browsers can now run app-like interfaces. This page is one.</p></div>
+  </div>
+  <div class="orig"><span class="k">FROM THE SLIDES · WEB SOFTWARE ENGINEERING</span>
+    <ul>
+      <li><b>Software reuse</b><ul><li>Software reuse is the dominant approach for constructing web-based systems. When building these systems, you think about how you can assemble them from pre-existing software components and systems.</li></ul></li>
+      <li><b>Incremental and agile development</b><ul><li>Web-based systems should be developed and delivered incrementally. It is now generally recognized that it is impractical to specify all the requirements for such systems in advance.</li></ul></li>
+      <li><b>Service-oriented systems</b><ul><li>Software may be implemented using service-oriented software engineering, where the software components are stand-alone web services.</li></ul></li>
+      <li><b>Rich interfaces</b><ul><li>Interface development technologies have emerged that support the creation of rich interfaces within a web browser.</li></ul></li>
+    </ul>
+  </div>
+  <p><strong>Dominant</strong> = the most common. <strong>Impractical</strong> = not realistic. These two ideas get full treatment in Lecture 2: <a href="#swe-lec02-integration">reuse (§7)</a> and <a href="#swe-lec02-delivery">incremental delivery (§11)</a>.</p>
+  <div class="flips">
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🔌</div><h4>Web services</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Web services</h4><p>Allow application functionality to be accessed over the web.</p><span class="hint">📄 Slide 17 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">☁️</div><h4>Cloud computing</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Cloud computing</h4><p>Providing computer services where applications run remotely on the ‘cloud’. Users do not buy software but pay according to use.</p><span class="hint">📄 Slide 17 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🏬</div><h4>Service-oriented systems</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Service-oriented systems</h4><p>Software implemented using service-oriented software engineering, where the components are stand-alone web services.</p><span class="hint">📄 Slide 20 · tap to flip back</span></div></div></button>
+    <button class="flip term" aria-pressed="false"><div class="in"><div class="f"><div class="ico">🖥️</div><h4>Rich interfaces</h4><span class="hint">tap for the definition</span></div><div class="b"><h4>Rich interfaces</h4><p>Interface development technologies now support the creation of rich interfaces within a web browser.</p><span class="hint">📄 Slide 20 · tap to flip back</span></div></div></button>
+  </div>
+  <div class="callout"><span class="k">THINK OF IT LIKE…</span><p>Renting a flat that comes furnished, with electricity billed by use. You don't build the furniture (reuse) or the power plant (cloud). And you move in room by room as each one is ready, instead of waiting for the whole building (incremental delivery).</p></div>
+</section>
+
+<!-- 12 -->
+<section class="sec" id="swe-lec01-recap" data-toc="12 · Lecture recap">
+  <div class="sechead"><div class="eyebrow">12 · Lecture recap</div><span class="ref">📄 Slides 21–23</span></div>
+  <h2>Lecture <span class="hl">recap</span></h2>
+  <div class="orig"><span class="k">FROM THE SLIDES · KEY POINTS (SLIDES 21–22)</span>
+    <ul>
+      <li>Software engineering is an engineering discipline that is concerned with all aspects of software production.</li>
+      <li>Essential software product attributes are maintainability, dependability and security, efficiency and acceptability.</li>
+      <li>The high-level activities of specification, development, validation and evolution are part of all software processes.</li>
+      <li>The fundamental notions of software engineering are universally applicable to all types of system development.</li>
+      <li>There are many different types of systems, and each requires appropriate software engineering tools and techniques for their development.</li>
+      <li>The fundamental ideas of software engineering are applicable to all types of software system.</li>
+      <li>Software engineers have responsibilities to the engineering profession and society. They should not simply be concerned with technical issues.</li>
+      <li>Professional societies publish codes of conduct which set out the standards of behaviour expected of their members.</li>
+    </ul>
+  </div>
+  <div class="callout"><span class="k">ONLY ON THE KEY-POINTS SLIDE</span><p>The last two points (professional responsibility and <strong>codes of conduct</strong>, written rules of good behaviour for members of a professional society) appear only in the key points, with no slide of their own. They can still come up in an exam. (Slide 23 is the closing “Thank you”.)</p></div>
+  <h3>Key points</h3>
+  <ol class="pts">
+    <li><strong>Software engineering</strong> covers all aspects of software production, from specification to maintenance, including project management and tools. <a class="ref" href="#swe-lec01-what">📄 S4</a></li>
+    <li>Software often costs more than hardware, and <strong>costs more to maintain than to develop</strong>. <a class="ref" href="#swe-lec01-costs">📄 S5</a></li>
+    <li>Four activities in every process: <strong>specification, development, validation, evolution</strong>. <a class="ref" href="#swe-lec01-activities">📄 S6</a></li>
+    <li>Engineering methods are usually cheaper in the long run; most costs come from changing software after it goes into use. <a class="ref" href="#swe-lec01-why">📄 S7</a></li>
+    <li><strong>Generic</strong> products: the developer owns the specification. <strong>Customized</strong> products: the customer owns it. <a class="ref" href="#swe-lec01-products">📄 S8–9</a></li>
+    <li>Four essential attributes: <strong>maintainability, dependability and security, efficiency, acceptability</strong>. <a class="ref" href="#swe-lec01-attributes">📄 S10</a></li>
+    <li>Four general issues: <strong>heterogeneity, business and social change, security and trust, scale</strong>. <a class="ref" href="#swe-lec01-issues">📄 S11–12</a></li>
+    <li><strong>Eight application types</strong>, each needing appropriate tools and techniques. <a class="ref" href="#swe-lec01-types">📄 S13–15</a></li>
+    <li>Fundamentals for every system: a managed process, dependability and performance, requirements, reuse. They apply to web systems too, where <strong>reuse</strong> and <strong>incremental delivery</strong> dominate. <a class="ref" href="#swe-lec01-web">📄 S16–20</a></li>
+  </ol>
+  <h3>Key formulas &amp; definitions</h3>
+  <p class="note">This lecture has no mathematical formulas. The relationship to remember:</p>
+  <div class="formula">Lifetime cost <span class="op">=</span> development <span class="op">+</span> maintenance<small>for long-life systems, maintenance may be several times development · 📄 Slide 5</small></div>
+  <h3>Common exam traps</h3>
+  <div class="trapgrid">
+    <div class="trap"><b class="t">TRAP · “SE = WRITING CODE”</b>Software engineering covers all aspects of production, including project management and developing tools and methods. <br><a class="ref" href="#swe-lec01-what">📄 S4</a></div>
+    <div class="trap"><b class="t">TRAP · WHERE THE MONEY GOES</b>Software costs more to <em>maintain</em> than to develop; it also often costs more than the hardware. <br><a class="ref" href="#swe-lec01-costs">📄 S5</a></div>
+    <div class="trap"><b class="t">TRAP · WHO OWNS THE SPEC</b>Generic: the developer. Customized: the customer. Not the other way round. <br><a class="ref" href="#swe-lec01-products">📄 S9</a></div>
+    <div class="trap"><b class="t">TRAP · “MORE FEATURES = BETTER”</b>Features are not one of the four essential attributes. <br><a class="ref" href="#swe-lec01-attributes">📄 S10</a></div>
+    <div class="trap"><b class="t">TRAP · THE CRITICAL ATTRIBUTE</b>Maintainability is called critical because software change is inevitable. <br><a class="ref" href="#swe-lec01-attributes">📄 S10</a></div>
+    <div class="trap"><b class="t">TRAP · DEPENDABILITY'S PARTS</b>Dependability includes reliability, security <em>and</em> safety. <br><a class="ref" href="#swe-lec01-attributes">📄 S10</a></div>
+    <div class="trap"><b class="t">TRAP · MOST NUMEROUS TYPE</b>Embedded control systems, not web or entertainment systems. <br><a class="ref" href="#swe-lec01-types">📄 S13</a></div>
+    <div class="trap"><b class="t">TRAP · LOCAL VS REMOTE</b>Stand-alone apps run locally with no network. Interactive transaction-based apps run on a remote computer. <br><a class="ref" href="#swe-lec01-types">📄 S13</a></div>
+    <div class="trap"><b class="t">TRAP · BATCH VS DATA COLLECTION</b>Batch: large batches of inputs into outputs. Data collection: sensors gather data and send it to other systems. <br><a class="ref" href="#swe-lec01-types">📄 S14–15</a></div>
+    <div class="trap"><b class="t">TRAP · CLOUD PAYMENT</b>Cloud users don't buy software; they pay according to use. <br><a class="ref" href="#swe-lec01-web">📄 S17</a></div>
+    <div class="trap"><b class="t">TRAP · “THE WEB NEEDS NEW RULES”</b>The same fundamentals apply to web-based systems as to any other. <br><a class="ref" href="#swe-lec01-web">📄 S18</a></div>
+    <div class="trap"><b class="t">TRAP · NOT JUST TECHNICAL</b>Engineers have responsibilities to the profession and society; professional societies publish codes of conduct. <br><a class="ref" href="#swe-lec01-recap">📄 S22</a></div>
+  </div>
+</section>
+
+<footer>Based on Lecture 1 “Introduction” by Prof. Dr. Sherin Moussa (23 slides; slide 23 is the closing “Thank you”) · Sommerville, <em>Software Engineering</em>, 10th ed. · Interactive pieces carried over from the original stand-alone Lecture 1 page · 🏨 hotel examples and the example systems table are illustrations, not slide content.</footer>
+
+<script>
+(window.LEC=window.LEC||{})["swe-lec01"]=function(root,S){
+const {$,$$,reduce}=S;
+const q=s=>$(s,root);
+const logTo=(el,h)=>{el.insertAdjacentHTML("beforeend",`<div>${h}</div>`);el.scrollTop=el.scrollHeight};
+
+/* §2 iceberg */
+q("#l1-dive").addEventListener("click",e=>{const d=q("#l1-berg").classList.toggle("dive");e.currentTarget.setAttribute("aria-pressed",String(d));e.currentTarget.textContent=d?"🏄 Back to the surface":"🤿 Dive under"});
+
+/* §3 cost slider */
+const yrs=q("#l1-yrs");
+function cost(){const y=+yrs.value,m=Math.max(.3,y*.35),max=Math.max(1,m),H=180;
+  q("#l1-yrsOut").textContent=y;q("#l1-bDev").style.height=(H/max)+"px";q("#l1-bMain").style.height=(m/max*H)+"px";
+  q("#l1-vMain").textContent=m.toFixed(1)+"×";q("#l1-mood").textContent=m<1?"🙂":m<2.5?"😐":m<4?"😬":"😱"}
+yrs.addEventListener("input",cost);cost();
+
+/* §4 process cycle */
+const P=[
+  ["Specification","📋","Customers and engineers define the software to be produced and the constraints on its operation.","The hotel says: guests book online, pay by card, 350 rooms, must work on phones."],
+  ["Development","⌨️","The software is designed and programmed.","Engineers design the database and screens, then write the booking code."],
+  ["Validation","✅","The software is checked to ensure it is what the customer requires.","Front-desk staff try real bookings before go-live. Does it match what was agreed?"],
+  ["Evolution","🌱","The software is modified to reflect changing customer and market requirements.","Two years later: a loyalty program and a new payment gateway. Back to specification!"]];
+const cyc=q("#l1-cyc"),pos=[[160,50],[270,160],[160,270],[50,160]];
+P.forEach((p,i)=>{const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.setAttribute("class","node");g.setAttribute("tabindex","0");g.setAttribute("role","button");g.setAttribute("aria-label",p[0]);
+  g.innerHTML=`<circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="40" fill="var(--card)" stroke="var(--blue)" stroke-width="2.5"/><text x="${pos[i][0]}" y="${pos[i][1]-3}" text-anchor="middle" font-size="20">${p[1]}</text><text x="${pos[i][0]}" y="${pos[i][1]+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)">${p[0]}</text>`;
+  g.addEventListener("click",()=>stage(i));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();stage(i)}});
+  cyc.appendChild(g)});
+cyc.insertAdjacentHTML("beforeend",`<text x="160" y="165" text-anchor="middle" font-size="11" fill="var(--soft)">tap a stage</text>`);
+if(reduce){const r=q("#l1-runner");if(r)r.remove()}
+function stage(i){$$(".node",cyc).forEach((g,j)=>g.classList.toggle("on",i===j));
+  q("#l1-stage").innerHTML=`<div class="tag">STAGE ${i+1} OF 4</div><h3 style="margin:.3rem 0 .6rem">${P[i][1]} ${P[i][0]}</h3><p>${P[i][2]}</p><div class="callout"><span class="k">🏨 IN A HOTEL</span><p>${P[i][3]}</p></div>`}
+stage(0);
+
+/* §5 Cowboy vs Engineer simulation */
+const EV={2:["Hotel adds a second pool bar to the POS","copy-pasted the whole menu module"],3:["Arabic language support","every string was hard-coded 😬"],5:["Old payment gateway shuts down","payment logic is spread over 14 files"],6:["Security audit after a breach elsewhere","no one knows what the code does"],8:["Guest app must talk to the booking engine","no API, just a shared database"],9:["Second hotel opens, wants the same system","everything assumes one hotel"]};
+const simLog=q("#l1-simLog"),simSvg=q("#l1-sim"),playBtn=q("#l1-simPlay");
+let sim={y:0,c:[1.5],e:[3],debt:0},timer=null;
+function change(label,why){const cc=.6*(1+sim.debt),ec=.6;sim.c[sim.y]+=cc;sim.e[sim.y]+=ec;sim.debt+=.7;
+  logTo(simLog,`<b>Year ${sim.y}:</b> ${label}<br>🤠 Cowboy +${cc.toFixed(1)} (${why}) · 🛠️ Engineer +${ec.toFixed(1)}`)}
+function draw(){const max=Math.max(18,...sim.c,...sim.e),X=y=>45+y*46,Y=v=>265-v/max*240;let g="";
+  for(let v=0;v<=max;v+=Math.ceil(max/6))g+=`<line x1="45" x2="505" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="38" y="${Y(v)+4}" font-size="10" text-anchor="end" fill="var(--soft)">${v}</text>`;
+  for(let y=0;y<=10;y+=2)g+=`<text x="${X(y)}" y="285" font-size="10" text-anchor="middle" fill="var(--soft)">y${y}</text>`;
+  const pts=a=>a.slice(0,sim.y+1).map((v,i)=>`${X(i)},${Y(v)}`).join(" ");
+  g+=`<polyline points="${pts(sim.e)}" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linejoin="round"/><polyline points="${pts(sim.c)}" fill="none" stroke="var(--orange)" stroke-width="3.5" stroke-linejoin="round"/>`;
+  g+=`<text x="${X(sim.y)+6}" y="${Y(sim.c[sim.y])}" font-size="16">🤠</text><text x="${X(sim.y)+6}" y="${Y(sim.e[sim.y])+14}" font-size="16">🛠️</text>`;
+  simSvg.innerHTML=g;q("#l1-simStat").textContent=`year ${sim.y} · cowboy ${sim.c[sim.y].toFixed(1)} · engineer ${sim.e[sim.y].toFixed(1)}`}
+function step(){if(sim.y>=10){clearInterval(timer);timer=null;logTo(simLog,`<b>Done.</b> Total after 10 years: 🤠 ${sim.c[10].toFixed(1)} vs 🛠️ ${sim.e[10].toFixed(1)}. Cheap to build ≠ cheap to own.`);return}
+  sim.y++;sim.c[sim.y]=sim.c[sim.y-1]+.3+sim.debt*.15;sim.e[sim.y]=sim.e[sim.y-1]+.35;
+  if(EV[sim.y])change(...EV[sim.y]);
+  if(sim.y>1&&sim.c[sim.y]>sim.e[sim.y]&&sim.c[sim.y-1]<=sim.e[sim.y-1])logTo(simLog,`<b style="color:var(--orange)">⚠ Year ${sim.y}: Cowboy just became the more expensive team.</b>`);
+  draw()}
+function simReset(){clearInterval(timer);timer=null;sim={y:0,c:[1.5],e:[3],debt:0};simLog.innerHTML="<div>Press run. Costs are made-up units, but the shape is the real lesson.</div>";playBtn.disabled=false;draw()}
+playBtn.addEventListener("click",()=>{if(sim.y>=10||timer)return;playBtn.disabled=true;timer=setInterval(step,reduce?150:700)});
+q("#l1-simChange").addEventListener("click",()=>{if(sim.y===0){logTo(simLog,"Launch first: press run.");return}
+  const r=["Manager wants a “small” new report","New tax rule for invoices","Marketing wants a promo-code field"];change(r[Math.floor(Math.random()*r.length)],"debt makes every change pricier");draw()});
+q("#l1-simReset").addEventListener("click",simReset);
+simReset();
+
+/* §6 generic vs customized */
+const PR={
+  g:{pic:`<g fill="none" stroke="var(--ink)" stroke-width="2.5"><line x1="20" y1="30" x2="240" y2="30"/></g>${[40,95,150,205].map((x,i)=>`<path d="M${x} 30v10" stroke="var(--ink)" stroke-width="2"/><path d="M${x-22} 50l12-10h20l12 10-8 8-6-4v50h-36v-50l-6 4z" fill="${["var(--blue)","var(--orange)","#7C7EE8","#2A9D8F"][i]}"/>`).join("")}<text x="130" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">same shirt for everyone</text>`,
+    f:[["What","Stand-alone systems marketed and sold to any customer who wishes to buy them."],["Examples","Graphics programs, project management tools, CAD software, appointments systems for dentists."],["Owns the spec","The software developer"],["Decides changes","The developer"]]},
+  c:{pic:`<path d="M100 40l18-14h24l18 14-10 10-8-6v70h-42v-70l-8 6z" fill="var(--blue)"/><path d="M60 150h140" stroke="var(--orange)" stroke-width="3" stroke-dasharray="4 4"/><text x="200" y="60" font-size="30">🧵</text><text x="30" y="70" font-size="30">✂️</text><text x="130" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">measured for one client</text>`,
+    f:[["What","Software commissioned by a specific customer to meet their own needs."],["Examples","Embedded control systems, air traffic control software, traffic monitoring systems."],["Owns the spec","The customer"],["Decides changes","The customer"]]}};
+const prodBtns=$$("[data-p]",root);
+function prod(k){q("#l1-prodPic").innerHTML=PR[k].pic;q("#l1-prodFacts").innerHTML=PR[k].f.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("");
+  prodBtns.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.p===k)))}
+prodBtns.forEach(b=>b.addEventListener("click",()=>prod(b.dataset.p)));prod("g");
+
+/* §7 what if an attribute is missing */
+const MISS=["The original developer left. Adding a new room type takes 3 months and breaks check-out.",
+  "The system crashes on New Year's Eve with 200 guests in the lobby. Card data leaks the next week.",
+  "The booking page takes 40 seconds at full occupancy. Guests book with the competitor.",
+  "The front desk finds it so confusing they go back to the paper logbook."];
+const missBtns=$$("[data-miss]",root);
+function miss(i){q("#l1-missTxt").textContent="💥 "+MISS[i];missBtns.forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.miss===i)))}
+missBtns.forEach(b=>b.addEventListener("click",()=>miss(+b.dataset.miss)));miss(0);
+
+/* §8 lock + scale */
+q("#l1-lock").addEventListener("click",()=>{const l=q("#l1-lock"),on=l.textContent==="🔓";l.textContent=on?"🔒":"🔓";q("#l1-lockTxt").textContent=on?"Trust earned. Users relax.":"Tap to lock it down"});
+const SC=[["⌚","smartwatch chip · 1 user"],["📱","phone app · thousands"],["🏨","hotel system · 350 rooms"],["🏦","national bank · millions"],["🌍","global cloud · billions"]];
+const sc=q("#l1-sc");function scale(){const v=SC[+sc.value];q("#l1-scBig").textContent=v[0];q("#l1-scWho").textContent=v[1];q("#l1-scBig").style.transform=`scale(${1+sc.value*.12})`}
+sc.addEventListener("input",scale);scale();
+
+/* §11 lego reuse + versions */
+const blks=$$("#l1-lego .blk",root);let built=false;
+function lego(){blks.forEach(b=>{b.style.left=built?b.dataset.bx:b.dataset.x;b.style.top=built?b.dataset.by:b.dataset.y;b.style.transform=built?"none":`rotate(${(Math.random()*16-8).toFixed(1)}deg)`});
+  q("#l1-lego").classList.toggle("built",built);q("#l1-legoBase").textContent=built?"✅ your hotel app, mostly assembled":"your hotel app";q("#l1-legoBtn").textContent=built?"↺ Scatter":"🧩 Assemble"}
+q("#l1-legoBtn").addEventListener("click",()=>{built=!built;lego()});lego();
+q("#l1-shipBtn").addEventListener("click",()=>{const v=$$(".ver",q("#l1-vers")),n=v.findIndex(x=>!x.classList.contains("shipped"));
+  if(n<0){v.slice(1).forEach(x=>x.classList.remove("shipped"));q("#l1-shipBtn").textContent="🚀 Ship next version";return}
+  v[n].classList.add("shipped");if(n===v.length-1)q("#l1-shipBtn").textContent="↺ Start over"});
+};
+</script>
+</article>
+
 <!-- ===== Software Engineering · Lecture 2 · Software Process Models (+ Tutorial 1) ===== -->
 <article class="view lecture" id="swe-lec02" data-title="L02 · Software Process Models" data-course="swe">
 
@@ -1005,7 +1629,7 @@ ol.must li strong{color:var(--ink)}
   <div class="sechead"><div class="eyebrow">13 · Practice</div><span class="ref">📄 Tutorial 1 · slides 1–58</span></div>
   <h2>Practice: <span class="hl">Tutorial 1</span> case studies</h2>
   <p>Tutorial 1 (Prof. Sherin Moussa and T.A. Verena Nashaat; credit to T.A. Yara Maher) has three parts: types of systems, discussing the book's case studies, and the three case studies used in this course. It has no numbered exercises. Instead, slide 12 gives six questions to ask about every case. Below, those questions keep their original wording and are applied to each book case. Each solution is the tutorial's own answer, hidden until you click.</p>
-  <div class="callout"><span class="k">WHAT THIS PRACTISES</span><p>The tutorial says these questions are central to <strong>requirements analysis</strong>. That is the <a href="#swe-lec02-process">Specification</a> activity from §1: “defining what the system should do”. The system types build on <a href="SWE_Scratch%20%E2%80%94%20Lecture%201_%20Introduction.html#types">Lecture 1's application types</a>.</p></div>
+  <div class="callout"><span class="k">WHAT THIS PRACTISES</span><p>The tutorial says these questions are central to <strong>requirements analysis</strong>. That is the <a href="#swe-lec02-process">Specification</a> activity from §1: “defining what the system should do”. The system types build on <a href="#swe-lec01-types">Lecture 1's application types</a>.</p></div>
 
   <h3>Part A · Types of systems <span class="ref">📄 T1 slides 3–10</span></h3>
   <div class="card mini">
@@ -2312,6 +2936,54 @@ ex("all");
 <!-- COURSE SUMMARY SECTIONS: one .sumcourse per course. Append lecture blocks above that course's SUMMARY:[course-id]:END marker. -->
 <div class="sumcourse" id="sum-swe">
   <h2><span class="hl">SE</span> · Software Engineering</h2>
+  <div class="sumblock" id="sum-swe-lec01">
+    <div class="sumhead"><h3>Lecture 1 · Introduction</h3><a class="btn ghost noprint" href="#swe-lec01">Open full lecture →</a></div>
+    <p class="note" style="margin:.3rem 0 0">Prof. Dr. Sherin Moussa · 23 slides · no tutorial for this lecture</p>
+    <h4>Must-know points</h4>
+    <ol class="must">
+      <li>Course book: Sommerville, <em>Software Engineering</em>, 10th ed. Grading: lab tasks 15, lab project 15, pop-up quizzes (2) 10, midterm 20, final 40 = 100. <a class="ref" href="#swe-lec01-course">📄 S2–3</a></li>
+      <li><strong>Software engineering</strong>: an engineering discipline concerned with all aspects of software production, from specification to maintenance. It includes project management and tools/methods, not just technical development. <a class="ref" href="#swe-lec01-what">📄 S4</a></li>
+      <li>Software often costs more than the hardware, and <strong>costs more to maintain than to develop</strong> (maintenance may be several times development for long-life systems). SE is about cost-effective development. <a class="ref" href="#swe-lec01-costs">📄 S5</a></li>
+      <li>Four process activities: <strong>specification, development, validation, evolution</strong>. <a class="ref" href="#swe-lec01-activities">📄 S6</a></li>
+      <li>SE methods are usually cheaper in the long run than treating a system like a personal programming project; most costs are changes after the software goes into use. <a class="ref" href="#swe-lec01-why">📄 S7</a></li>
+      <li><strong>Generic</strong> products (sold to anyone; the developer owns the spec) vs <strong>customized</strong> products (commissioned by one customer; the customer owns the spec). <a class="ref" href="#swe-lec01-products">📄 S8–9</a></li>
+      <li>Essential attributes of good software: <strong>maintainability</strong> (critical), <strong>dependability and security</strong>, <strong>efficiency</strong>, <strong>acceptability</strong>. <a class="ref" href="#swe-lec01-attributes">📄 S10</a></li>
+      <li>General issues: <strong>heterogeneity, business and social change, security and trust, scale</strong>. <a class="ref" href="#swe-lec01-issues">📄 S11–12</a></li>
+      <li>Eight <strong>application types</strong>; embedded control systems are probably the most numerous. Fundamentals that apply to all: managed process, dependability and performance, requirements, reuse. <a class="ref" href="#swe-lec01-types">📄 S13–16</a></li>
+      <li>On the web: web services, cloud computing (pay according to use); <strong>reuse is dominant</strong> and systems are delivered <strong>incrementally</strong>; service-oriented systems and rich interfaces. Engineers have responsibilities to the profession and society. <a class="ref" href="#swe-lec01-web">📄 S17–22</a></li>
+    </ol>
+    <h4>Definitions &amp; formulas</h4>
+    <div class="tablewrap"><table class="tbl">
+      <thead><tr><th>Term</th><th>Definition (slide wording)</th><th>Slide</th></tr></thead>
+      <tbody>
+        <tr><td>Software engineering</td><td>An engineering discipline that is concerned with all aspects of software production from the early stages of system specification through to maintaining the system after it has gone into use.</td><td class="c">4</td></tr>
+        <tr><td>Engineering discipline</td><td>Using appropriate theories and methods to solve problems bearing in mind organizational and financial constraints.</td><td class="c">4</td></tr>
+        <tr><td>All aspects of software production</td><td>Not just technical process of development, also project management and the development of tools, methods etc. to support software production.</td><td class="c">4</td></tr>
+        <tr><td>Software costs</td><td>Software costs more to maintain than it does to develop. For systems with a long life, maintenance costs may be several times development costs.</td><td class="c">5</td></tr>
+        <tr><td>Software specification</td><td>Customers and engineers define the software that is to be produced and the constraints on its operation.</td><td class="c">6</td></tr>
+        <tr><td>Software development</td><td>The software is designed and programmed.</td><td class="c">6</td></tr>
+        <tr><td>Software validation</td><td>The software is checked to ensure that it is what the customer requires.</td><td class="c">6</td></tr>
+        <tr><td>Software evolution</td><td>The software is modified to reflect changing customer and market requirements.</td><td class="c">6</td></tr>
+        <tr><td>Generic products</td><td>Stand-alone systems that are marketed and sold to any customer who wishes to buy them. Specification owned by the software developer.</td><td class="c">8–9</td></tr>
+        <tr><td>Customized products</td><td>Software that is commissioned by a specific customer to meet their own needs. Specification owned by the customer.</td><td class="c">8–9</td></tr>
+        <tr><td>Maintainability</td><td>Software should be written so that it can evolve to meet the changing needs of customers; critical because software change is inevitable.</td><td class="c">10</td></tr>
+        <tr><td>Dependability and security</td><td>Includes reliability, security and safety. Should not cause physical or economic damage in the event of system failure. Malicious users should not be able to access or damage the system.</td><td class="c">10</td></tr>
+        <tr><td>Efficiency</td><td>Should not make wasteful use of system resources such as memory and processor cycles: responsiveness, processing time, memory utilisation, etc.</td><td class="c">10</td></tr>
+        <tr><td>Acceptability</td><td>Must be acceptable to the type of users for which it is designed: understandable, usable and compatible with other systems that they use.</td><td class="c">10</td></tr>
+        <tr><td>Heterogeneity</td><td>Systems are required to operate as distributed systems across networks that include different types of computer and mobile devices.</td><td class="c">11</td></tr>
+        <tr><td>Business and social change</td><td>Business and society change quickly; they need to change existing software and rapidly develop new software.</td><td class="c">11</td></tr>
+        <tr><td>Security and trust</td><td>As software is intertwined with all aspects of our lives, it is essential that we can trust that software.</td><td class="c">12</td></tr>
+        <tr><td>Scale</td><td>From very small embedded systems in portable or wearable devices through to Internet-scale, cloud-based systems that serve a global community.</td><td class="c">12</td></tr>
+        <tr><td>Application types</td><td>Stand-alone · interactive transaction-based · embedded control · batch processing · entertainment · modeling and simulation · data collection · systems of systems.</td><td class="c">13–15</td></tr>
+        <tr><td>SE fundamentals</td><td>Managed and understood development process · dependability and performance · software specification and requirements · reuse software where appropriate.</td><td class="c">16</td></tr>
+        <tr><td>Web services</td><td>Allow application functionality to be accessed over the web.</td><td class="c">17</td></tr>
+        <tr><td>Cloud computing</td><td>An approach to the provision of computer services where applications run remotely on the ‘cloud’. Users do not buy software but pay according to use.</td><td class="c">17</td></tr>
+        <tr><td>Web SE</td><td>Software reuse is the dominant approach; incremental and agile development; service-oriented systems (components are stand-alone web services); rich interfaces in a web browser.</td><td class="c">19–20</td></tr>
+        <tr><td>Codes of conduct</td><td>Published by professional societies; set out the standards of behaviour expected of their members.</td><td class="c">22</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-bottom:0">No practice questions: no tutorial or assignment was provided for this lecture.</p>
+  </div>
   <div class="sumblock" id="sum-swe-lec02">
     <div class="sumhead"><h3>Lecture 2 · Software Process Models</h3><a class="btn ghost noprint" href="#swe-lec02">Open full lecture →</a></div>
     <p class="note" style="margin:.3rem 0 0">Prof. Dr. Sherin Moussa · 32 slides · practice from Tutorial 1</p>
@@ -2430,15 +3102,15 @@ ex("all");
       <div class="qt">1. A system to control anti-lock braking in a car</div>
       <button class="reveal">Show solution</button>
       <div class="sol" hidden><p><strong>Waterfall model</strong>, because it is a safety-critical system: errors could lead to a life-threatening situation, so all activities are planned and scheduled before implementation, and unit testing verifies each unit meets its specification.</p><span class="ref">📄 T2 slide 56</span></div></div>
-    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 2 · SLIDES 57–59</span><a class="ref noprint" href="#swe-lec02-incremental">tests L02 §6 · Incremental, §10 · Prototyping</a></div>
+    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 2 · SLIDES 57–59</span><a class="ref noprint" href="#swe-lec02-incremental">tests L02 §6, §10</a></div>
       <div class="qt">2. A virtual reality system to support software maintenance.</div>
       <button class="reveal">Show solution</button>
       <div class="sol" hidden><p><strong>Solution 1: incremental development</strong>, because the requirements would be hard to determine in advance, and the software comes in many versions to be updated. <strong>Solution 2: throw-away prototyping</strong>, to understand the requirements when they are not fully laid out (e.g. a quick VR demonstration that users test before the real system is designed).</p><span class="ref">📄 T2 slides 58–59</span></div></div>
-    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 3 · SLIDES 60–61</span><a class="ref noprint" href="#swe-lec02-integration">tests L02 §5 · Waterfall, §7 · Reuse</a></div>
+    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 3 · SLIDES 60–61</span><a class="ref noprint" href="#swe-lec02-integration">tests L02 §5, §7</a></div>
       <div class="qt">3. A university accounting system that replaces an existing system</div>
       <button class="reveal">Show solution</button>
       <div class="sol" hidden><p><strong>Waterfall model</strong>: the requirements must be stable and the system secure because it replaces an existing system. If usable components exist, <strong>reuse development</strong> is also appropriate. Therefore, a planned <strong>mixture between both</strong> is the most appropriate.</p><span class="ref">📄 T2 slide 61</span></div></div>
-    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 4 · SLIDES 62–63</span><a class="ref noprint" href="#swe-lec02-incremental">tests L02 §6 · Incremental, §10, §5</a></div>
+    <div class="qa"><div class="qmeta"><span class="qnum">T2 · PRACTICE 4 · SLIDES 62–63</span><a class="ref noprint" href="#swe-lec02-incremental">tests L02 §6, §10, §5</a></div>
       <div class="qt">4. An interactive travel planning system that helps users plan journeys</div>
       <button class="reveal">Show solution</button>
       <div class="sol" hidden><p><strong>Incremental model</strong>: complex user interface that must be stable and reliable, and requirements will change as real user experience is gained. Best approach: incremental model using <strong>throw-away prototyping</strong> to find the requirements, then <strong>switching to a waterfall model</strong> for a structured design and implementation.</p><span class="ref">📄 T2 slide 63</span></div></div>
